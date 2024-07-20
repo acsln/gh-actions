@@ -31,7 +31,6 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
 
       - name: Publish package
-        if: ${{ github.event_name != 'pull_request' }}
         run: |
           NEW_VERSION=${{ inputs.version }}
           echo "New version: ${NEW_VERSION}"
