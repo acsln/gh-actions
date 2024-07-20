@@ -3,6 +3,7 @@ on:
   workflow_call:
     inputs:
       version:
+        description: 'Version'
         required: true
         type: string
 
