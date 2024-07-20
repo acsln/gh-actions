@@ -1,3 +1,3 @@
-## Shared github actions
+## Shared GitHub actions
 
-This repo provodes shared actions for github to all services 
+This repo provides shared actions for GitHub to all services 

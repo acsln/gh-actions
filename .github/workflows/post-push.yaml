@@ -1,0 +1,14 @@
+name: Post Push Update
+on:
+  workflow_call:
+
+jobs:
+  post-push:
+    runs-on: ubuntu-latest
+    steps:
+      # - name: get-default-branch
+      #   run: |
+      #     branch=$(curl -s "https://api.github.com/repos/$GITHUB_REPOSITORY" | jq -r '.default_branch')
+      #     echo "default_branch=$branch" >> $GITHUB_ENV
+      - uses: 8BitJonny/gh-get-current-pr@2.1.0
+        id: PR

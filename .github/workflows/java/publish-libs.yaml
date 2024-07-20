@@ -1,0 +1,41 @@
+name: Publish java libs
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+
+
+jobs:
+  publish-java-libs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+
+      - name: Set up the JDK used to run Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+
+      - name: Publish package
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          NEW_VERSION=${{ inputs.version }}
+          echo "New version: ${NEW_VERSION}"
+          echo "Github username: ${GITHUB_ACTOR}"
+          ./gradlew -Pversion=${NEW_VERSION} publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
