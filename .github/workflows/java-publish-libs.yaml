@@ -24,7 +24,7 @@ jobs:
           path: gh-actions
 
       - name: Build Java
-        uses: ${GITHUB_WORKSPACE}/gh-actions/.github/workflows/java-build.yaml
+        uses: acsln/gh-actions/.github/workflows/java-build.yaml@dev
 
       - name: Publish package
         run: |

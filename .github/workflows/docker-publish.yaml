@@ -22,7 +22,7 @@ jobs:
           path: gh-actions
 
       - name: Build Java
-        uses: ${GITHUB_WORKSPACE}/gh-actions/.github/workflows/java-build.yaml
+        uses: acsln/gh-actions/.github/workflows/java-build.yaml@dev
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1
