@@ -14,7 +14,7 @@ jobs:
       packages: write
     steps:
       - name: Build Java
-        uses: ./.github/actions/java-build
+        uses: acsln/gh-actions/.github/workflows/java-build.yaml@dev
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1
