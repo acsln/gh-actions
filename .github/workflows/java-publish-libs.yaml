@@ -16,7 +16,7 @@ jobs:
       packages: write
     steps:
       - name: Build Java
-        uses: acsln/gh-actions/.github/workflows/java-build.yaml@dev
+        uses: acsln/gh-actions/.github/actions/java-build.yaml@dev
 
       - name: Publish package
         run: |
