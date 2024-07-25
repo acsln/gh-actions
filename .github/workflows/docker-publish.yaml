@@ -13,8 +13,15 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Checkout reusable workflow dir
+        uses: actions/checkout@v3
+        with:
+          repository: acsln/gh-actions
+          #          token: ${{ secrets.GIT_ACCESS_TOKEN }}
+          path: gh-actions
+
       - name: Build Java
-        uses: ./.github/workflows/java-build.yaml
+        uses: gh-actions/.github/workflows/java-build.yaml
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1
