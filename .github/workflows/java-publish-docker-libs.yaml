@@ -36,14 +36,12 @@ jobs:
 
       - name: Build java
         run: |
-          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}-${{ github.run_attempt }}
-          elif [[ ${{ github.ref }} == *${tags}* ]]; then
-            NEW_VERSION=$(echo ${{ github.ref }} | cut -d'/' -f3)
-          elif [ "${{ inputs.version }}" != '' ]; then
+          if [ "${{ inputs.version }}" != '' ]; then
             NEW_VERSION=${{ inputs.version }}
+          elif [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}-${{ github.run_attempt }}
           else
-            NEW_VERSION=0.1.${{ github.head_ref }}.${{ github.sha }}
+            NEW_VERSION=0.1.$(echo ${{ github.ref }} | cut -d'/' -f3).${{ github.sha }}
           fi
           echo "New version: ${NEW_VERSION}"
           echo "Github username: ${GITHUB_ACTOR}"
@@ -51,14 +49,12 @@ jobs:
 
       - name: Publish package
         run: |
-          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}-${{ github.run_attempt }}
-          elif [[ ${{ github.ref }} == *${tags}* ]]; then
-            NEW_VERSION=$(echo ${{ github.ref }} | cut -d'/' -f3)
-          elif [ "${{ inputs.version }}" != '' ]; then
+          if [ "${{ inputs.version }}" != '' ]; then
             NEW_VERSION=${{ inputs.version }}
+          elif [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}-${{ github.run_attempt }}
           else
-            NEW_VERSION=0.1.${{ github.head_ref }}.${{ github.sha }}
+            NEW_VERSION=0.1.$(echo ${{ github.ref }} | cut -d'/' -f3).${{ github.sha }}
           fi
           echo "New version: ${NEW_VERSION}"
           echo "Github username: ${GITHUB_ACTOR}"
