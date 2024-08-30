@@ -34,12 +34,20 @@ jobs:
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
 
-#      - name: Build java
-#        run: |
-#          NEW_VERSION=${{ inputs.version }}
-#          echo "New version: ${NEW_VERSION}"
-#          echo "Github username: ${GITHUB_ACTOR}"
-#          ./gradlew -Pversion=${NEW_VERSION} build
+      - name: Build java
+        run: |
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}
+          elif [[ ${{ github.ref }} == *${ref}* ]]; then
+            NEW_VERSION=$(echo ${{ github.ref }} | cut -d'/' -f3)
+          elif [ "${{ inputs.version }}" != '' ]; then
+            NEW_VERSION=${{ inputs.version }}
+          else
+            NEW_VERSION=0.1.${{ github.head_ref }}.${{ github.sha }}
+          fi
+          echo "New version: ${NEW_VERSION}"
+          echo "Github username: ${GITHUB_ACTOR}"
+          ./gradlew -Pversion=${NEW_VERSION} build
 
       - name: Publish package
         run: |
