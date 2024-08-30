@@ -4,7 +4,7 @@ on:
     inputs:
       version:
         description: 'Version'
-        required: true
+        required: false
         type: string
 
 env:
@@ -34,16 +34,25 @@ jobs:
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
 
-      - name: Build java
-        run: |
-          NEW_VERSION=${{ inputs.version }}
-          echo "New version: ${NEW_VERSION}"
-          echo "Github username: ${GITHUB_ACTOR}"
-          ./gradlew -Pversion=${NEW_VERSION} build
+#      - name: Build java
+#        run: |
+#          NEW_VERSION=${{ inputs.version }}
+#          echo "New version: ${NEW_VERSION}"
+#          echo "Github username: ${GITHUB_ACTOR}"
+#          ./gradlew -Pversion=${NEW_VERSION} build
 
       - name: Publish package
         run: |
-          NEW_VERSION=${{ inputs.version }}
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+          ${{ github.event_name != 'pull_request'}}
+            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}
+          else if [[ ${{ github.ref }} == *${ref}* ]]; then
+            NEW_VERSION=$(echo ${{ github.ref }} | cut -d'/' -f3)
+          else if [ "${{ inputs.version }}" != '' ]; then
+            NEW_VERSION=${{ inputs.version }}
+          else
+            NEW_VERSION=0.1.${{ github.head_ref }}.${{ github.sha }}
+          fi
           echo "New version: ${NEW_VERSION}"
           echo "Github username: ${GITHUB_ACTOR}"
           ./gradlew -Pversion=${NEW_VERSION} publish
