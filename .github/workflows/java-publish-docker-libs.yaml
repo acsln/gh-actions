@@ -44,11 +44,10 @@ jobs:
       - name: Publish package
         run: |
           if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-          ${{ github.event_name != 'pull_request'}}
             NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}
-          else if [[ ${{ github.ref }} == *${ref}* ]]; then
+          elif [[ ${{ github.ref }} == *${ref}* ]]; then
             NEW_VERSION=$(echo ${{ github.ref }} | cut -d'/' -f3)
-          else if [ "${{ inputs.version }}" != '' ]; then
+          elif [ "${{ inputs.version }}" != '' ]; then
             NEW_VERSION=${{ inputs.version }}
           else
             NEW_VERSION=0.1.${{ github.head_ref }}.${{ github.sha }}
