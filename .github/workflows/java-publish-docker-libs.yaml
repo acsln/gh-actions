@@ -37,7 +37,7 @@ jobs:
       - name: Build java
         run: |
           if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}
+            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}-${{ github.run_attempt }}
           elif [[ ${{ github.ref }} == *${ref}* ]]; then
             NEW_VERSION=$(echo ${{ github.ref }} | cut -d'/' -f3)
           elif [ "${{ inputs.version }}" != '' ]; then
@@ -52,7 +52,7 @@ jobs:
       - name: Publish package
         run: |
           if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}
+            NEW_VERSION=0.1.pr-${{ github.event.number }}.${{ github.run_number }}-${{ github.run_attempt }}
           elif [[ ${{ github.ref }} == *${ref}* ]]; then
             NEW_VERSION=$(echo ${{ github.ref }} | cut -d'/' -f3)
           elif [ "${{ inputs.version }}" != '' ]; then
